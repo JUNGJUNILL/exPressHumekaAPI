@@ -48,17 +48,22 @@ router.get('/mssql', async (req, res, next)=>{
 
     await sql.connect(config)
     
-    const sql01 = `select * from emp`;
+    const sql01 = `select empno,ename from emp`;
     const sql02 = `select * from dept`;
 
-    const sql01Result = await sql.query(sql01);
+    //const sql01Result = await sql.query(sql01);
     const sql02Result = await sql.query(sql02);
 
-
-    Promise.all([sql01Result,sql02Result]).then(message=>{
-      res.status(200).json(message); 
+    //res.status(200).json(sql02Result);
+    sql02Result.map((v)=>{
+      res.status(200).json(v)
+    })
+    sql.close();
+  /*  Promise.all([sql02Result]).then(result=>{
+      // res.status(200).json(reslut);
+     
       sql.close();
-    });
+    });*/
 
   }catch(error){
     console.error(error); 
